@@ -117,7 +117,11 @@ namespace Windows.UI.Xaml
 
 		public static RoutedEvent HoldingEvent { get; } = new RoutedEvent(RoutedEventFlag.Holding);
 
+		public static RoutedEvent PreviewKeyDownEvent { get; } = new RoutedEvent(RoutedEventFlag.PreviewKeyDown);
+
 		public static RoutedEvent KeyDownEvent { get; } = new RoutedEvent(RoutedEventFlag.KeyDown);
+
+		public static RoutedEvent PreviewKeyUpEvent { get; } = new RoutedEvent(RoutedEventFlag.PreviewKeyUp);
 
 		public static RoutedEvent KeyUpEvent { get; } = new RoutedEvent(RoutedEventFlag.KeyUp);
 
@@ -330,6 +334,12 @@ namespace Windows.UI.Xaml
 			remove => RemoveHandler(HoldingEvent, value);
 		}
 
+		public event KeyEventHandler PreviewKeyDown
+		{
+			add => AddHandler(PreviewKeyDownEvent, value, false);
+			remove => RemoveHandler(PreviewKeyDownEvent, value);
+		}
+
 #if __MACOS__
 		public new event KeyEventHandler KeyDown
 #else
@@ -338,6 +348,12 @@ namespace Windows.UI.Xaml
 		{
 			add => AddHandler(KeyDownEvent, value, false);
 			remove => RemoveHandler(KeyDownEvent, value);
+		}
+
+		public event KeyEventHandler PreviewKeyUp
+		{
+			add => AddHandler(PreviewKeyUpEvent, value, false);
+			remove => RemoveHandler(PreviewKeyUpEvent, value);
 		}
 
 #if __MACOS__

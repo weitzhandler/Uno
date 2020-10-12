@@ -20,9 +20,9 @@ namespace Uno.UI.Xaml
 		PointerWheelChanged = 1UL << 7,
 
 		// Keyboard
-		// PreviewKeyDown = 1UL << 12 => Reserved for future usage
+		PreviewKeyDown = 1UL << 12,
 		KeyDown = 1UL << 13,
-		// PreviewKeyUp = 1 >> 14, => Reserved for future usage
+		PreviewKeyUp = 1 >> 14,
 		KeyUp = 1UL << 15,
 		// CharacterReceived = 1UL << 16,
 		// ProcessKeyboardAccelerators = 1UL << 17, => Reserved for future use (even if it is not an actual standard RoutedEvent)
@@ -56,7 +56,7 @@ namespace Uno.UI.Xaml
 		Tapped = 1UL << 48,
 		DoubleTapped = 1UL << 49,
 		RightTapped = 1UL << 50,
-		Holding = 1UL << 51, 
+		Holding = 1UL << 51,
 
 		// Context menu
 		// ContextRequested = 1UL << 61, => Reserved for future usage 
@@ -76,19 +76,22 @@ namespace Uno.UI.Xaml
 			| RoutedEventFlag.PointerWheelChanged;
 
 		private const RoutedEventFlag _isKey = // 0b0000_0000_0000_0000___0000_0000_0000_0000___0000_0000_0001_1111___1111_0000_0000_0000
-			  RoutedEventFlag.KeyDown
+			  RoutedEventFlag.PreviewKeyDown
+			| RoutedEventFlag.KeyDown
+			| RoutedEventFlag.PreviewKeyUp
 			| RoutedEventFlag.KeyUp;
+
 
 		private const RoutedEventFlag _isFocus = // 0b0000_0000_0000_0000___0000_0000_0000_0000___0011_1111_0000_0000___0000_0000_0000_0000
 			  RoutedEventFlag.GotFocus
 			| RoutedEventFlag.LostFocus;
 
 		private const RoutedEventFlag _isDragAndDrop = (RoutedEventFlag)0b0000_0000_0000_0000___0000_0000_0001_1111___0000_0000_0000_0000___0000_0000_0000_0000;
-			//  RoutedEventFlag.DragEnter
-			//| RoutedEventFlag.DragLeave
-			//| RoutedEventFlag.DragOver
-			//| RoutedEventFlag.Drop
-			//| RoutedEventFlag.DropCompleted;
+		//  RoutedEventFlag.DragEnter
+		//| RoutedEventFlag.DragLeave
+		//| RoutedEventFlag.DragOver
+		//| RoutedEventFlag.Drop
+		//| RoutedEventFlag.DropCompleted;
 
 		private const RoutedEventFlag _isManipulation = // 0b0000_0000_0000_0000___0001_1111_0000_0000___0000_0000_0000_0000___0000_0000_0000_0000
 			  RoutedEventFlag.ManipulationStarting
@@ -104,8 +107,8 @@ namespace Uno.UI.Xaml
 			| RoutedEventFlag.Holding;
 
 		private const RoutedEventFlag _isContextMenu = (RoutedEventFlag)0b0011_0000_0000_0000___0000_0000_0000_0000___0000_0000_0000_0000___0000_0000_0000_0000;
-			//   RoutedEventFlag.ContextRequested
-			// | RoutedEventFlag.ContextCanceled;
+		//   RoutedEventFlag.ContextRequested
+		// | RoutedEventFlag.ContextCanceled;
 
 		[Pure]
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]

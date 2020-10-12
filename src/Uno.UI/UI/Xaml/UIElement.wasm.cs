@@ -597,9 +597,9 @@ namespace Windows.UI.Xaml
 
 		// We keep track of registered routed events to avoid registering the same one twice (mainly because RemoveHandler is not implemented)
 		private RoutedEventFlag _registeredRoutedEvents;
-
+				
 		partial void AddKeyHandler(RoutedEvent routedEvent, int handlersCount, object handler, bool handledEventsToo)
-		{
+		{			
 			if (handlersCount != 1
 				// We do not remove event handlers for now, so do not rely only on the handlersCount and keep track of registered events
 				|| _registeredRoutedEvents.HasFlag(routedEvent.Flag))
@@ -609,15 +609,20 @@ namespace Windows.UI.Xaml
 			_registeredRoutedEvents |= routedEvent.Flag;
 
 			string domEventName;
-			if (routedEvent.Flag == RoutedEventFlag.KeyDown)
+			var downFlags = RoutedEventFlag.PreviewKeyDown | RoutedEventFlag.KeyDown;
+			var upFlags = RoutedEventFlag.PreviewKeyUp | RoutedEventFlag.KeyUp;
+
+			if (downFlags.HasFlag(routedEvent.Flag))
 			{
 				domEventName = "keydown";
 			}
+			else if (upFlags.HasFlag(routedEvent.Flag))
+			{
+				domEventName = "keyup";
+			}
 			else
 			{
-				domEventName = routedEvent.Flag == RoutedEventFlag.KeyUp
-					? "keyup"
-					: throw new ArgumentOutOfRangeException(nameof(routedEvent), "Not a keyboard event");
+				throw new ArgumentOutOfRangeException(nameof(routedEvent), "Not a keyboard event");
 			}
 
 			RegisterEventHandler(
@@ -657,7 +662,7 @@ namespace Windows.UI.Xaml
 
 		private static KeyRoutedEventArgs PayloadToKeyArgs(object src, string payload)
 		{
-			return new KeyRoutedEventArgs(src, VirtualKeyHelper.FromKey(payload)) {CanBubbleNatively = true};
+			return new KeyRoutedEventArgs(src, VirtualKeyHelper.FromKey(payload)) { CanBubbleNatively = true };
 		}
 
 		private static RoutedEventArgs PayloadToFocusArgs(object src, string payload)

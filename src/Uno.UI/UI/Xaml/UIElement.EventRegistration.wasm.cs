@@ -121,7 +121,7 @@ namespace Windows.UI.Xaml
 
 							if (result is bool isHandedInManaged && isHandedInManaged)
 							{
-								return true; // will call ".preventDefault()" in JS to prevent native bubbling
+								return true; // will call ".stopPropagation()" in JS to prevent native bubbling
 							}
 						}
 					}
